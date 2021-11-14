@@ -1,6 +1,6 @@
 from taggit.managers import TaggableManager
 from model_utils.models import TimeStampedModel
-from django.db import models, IntegrityError
+from django.db import models
 
 
 class Category(TimeStampedModel):
