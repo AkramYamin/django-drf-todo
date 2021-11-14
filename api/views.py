@@ -1,6 +1,7 @@
 from .models import Category, Task
 from .serializers import CategorySerializer, TaskSerializer
 from rest_framework import generics
+from .permissions import IsOwner
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -8,8 +9,11 @@ class CategoryList(generics.ListCreateAPIView):
         List all the categories from DB
         also allows POST request to create some
     """
-    queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsOwner,)
+
+    def get_queryset(self, *args, **kwargs):
+        return Category.objects.all().filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         """
@@ -28,6 +32,7 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsOwner,)
 
 
 class TaskList(generics.ListCreateAPIView):
@@ -37,6 +42,10 @@ class TaskList(generics.ListCreateAPIView):
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = (IsOwner,)
+
+    def get_queryset(self, *args, **kwargs):
+        return Task.objects.all().filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         """
@@ -55,3 +64,4 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = (IsOwner,)
