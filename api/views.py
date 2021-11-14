@@ -11,6 +11,15 @@ class CategoryList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+    def perform_create(self, serializer):
+        """
+            Override the perform_create from the generic
+            serializers.
+            :param self: Class
+            :param serializer: serializer used to perform actions
+        """
+        serializer.save(owner=self.request.user)
+
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -28,6 +37,15 @@ class TaskList(generics.ListCreateAPIView):
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+
+    def perform_create(self, serializer):
+        """
+            Override the perform_create from the generic
+            serializers.
+            :param self: Class
+            :param serializer: serializer used to perform actions
+        """
+        serializer.save(owner=self.request.user)
 
 
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -1,6 +1,7 @@
 from taggit.managers import TaggableManager
 from model_utils.models import TimeStampedModel
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(TimeStampedModel):
@@ -10,7 +11,7 @@ class Category(TimeStampedModel):
         Relations:
             - one owner per category.
     """
-    # owner = models.ForeignKey('UserModel', related_name='categories', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='categories', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
@@ -32,7 +33,7 @@ class Task(TimeStampedModel):
     """
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="task_category", blank=True,
                                  null=True)
-    # owner = models.ForeignKey('UserModel', related_name='tasks', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='tasks', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField(blank=True, null=False)
     due_date = models.DateField()
