@@ -94,7 +94,6 @@ class TaskList(generics.ListCreateAPIView):
 class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     """
         Detail the specific task
-        database
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
