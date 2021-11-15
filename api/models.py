@@ -37,6 +37,7 @@ class Task(TimeStampedModel):
     title = models.CharField(max_length=255, null=False, blank=False)
     description = models.TextField(blank=True, null=False)
     due_date = models.DateField()
+    is_done = models.BooleanField(default=False)
     # For tagging I'll use a third-party package
     tags = TaggableManager(blank=True)
 
