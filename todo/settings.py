@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'api',
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 SITE_ID = 1
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -144,3 +145,5 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+
