@@ -1,7 +1,7 @@
 # django-drf-todo
 TODO app backend using django and django rest framework
 
-### This backend is hosted on Heruko:
+### This backend is hosted on Heroku:
 https://django-drf-todo.herokuapp.com/docs/
 ### To run the project locally
 ```
