@@ -10,8 +10,8 @@ from rest_framework.response import Response
 
 class CategoryList(generics.ListCreateAPIView):
     """
-        List all the categories from DB
-        also allows POST request to create some
+        List all the categories from DB, also allows POST request to create some.
+        categories list will accessible to the owner only
     """
     serializer_class = CategorySerializer
     permission_classes = (IsAuthenticatedAndOwner,)
@@ -48,8 +48,7 @@ class CategoryList(generics.ListCreateAPIView):
 
 class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     """
-        Detail the specific category
-        database
+        Detail the specific category, the category will accessible to the owner only
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -58,8 +57,8 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class TaskList(generics.ListCreateAPIView):
     """
-        List all the tasks from DB
-        also allows POST request to create some
+        List all the tasks from DB, also allows POST request to create some.
+        tasks will accessible to the owner only
     """
     serializer_class = TaskSerializer
     permission_classes = (IsAuthenticatedAndOwner,)
