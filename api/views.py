@@ -1,8 +1,11 @@
 from .models import Category, Task
 from .serializers import CategorySerializer, TaskSerializer
 from rest_framework import generics
-from .permissions import IsOwner
+from .permissions import IsAuthenticatedAndOwner
 from datetime import date
+from django.db import IntegrityError
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -11,10 +14,27 @@ class CategoryList(generics.ListCreateAPIView):
         also allows POST request to create some
     """
     serializer_class = CategorySerializer
-    permission_classes = (IsOwner,)
+    permission_classes = (IsAuthenticatedAndOwner,)
 
     def get_queryset(self, *args, **kwargs):
         return Category.objects.all().filter(owner=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        """
+            override create method to handle category duplication exception
+        :param request:
+        :param args:
+        :param kwargs:
+        :return: HTTP_409_CONFLICT if the category already exists, otherwise HTTP_201_CREATED code
+        """
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            self.perform_create(serializer)
+        except IntegrityError:
+            return Response(status=status.HTTP_409_CONFLICT)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
         """
@@ -33,7 +53,7 @@ class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsOwner,)
+    permission_classes = (IsAuthenticatedAndOwner,)
 
 
 class TaskList(generics.ListCreateAPIView):
@@ -42,7 +62,7 @@ class TaskList(generics.ListCreateAPIView):
         also allows POST request to create some
     """
     serializer_class = TaskSerializer
-    permission_classes = (IsOwner,)
+    permission_classes = (IsAuthenticatedAndOwner,)
 
     def get_queryset(self, *args, **kwargs):
         """
@@ -78,4 +98,4 @@ class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = (IsOwner,)
+    permission_classes = (IsAuthenticatedAndOwner,)

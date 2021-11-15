@@ -20,6 +20,9 @@ class Category(TimeStampedModel):
     class Meta:
         verbose_name_plural = "categories"
         ordering = ('created',)
+        constraints = [
+            models.UniqueConstraint(fields=['owner', 'title'], name='unique_category_per_user')
+        ]
 
 
 class Task(TimeStampedModel):
